@@ -8,9 +8,16 @@ const useGlobal = () => {
 
   const toggleModal = () => setOpen(!open);
 
-  const getPayment = (body) => {
-    axios.post(`${process.env.REACT_APP_SERVER_URL}/api/bkash`, { ...body, totalPrice });
-  }
+  const getPayment = async (body) => {
+    const { data: agreementResponse } = await axios.post(
+      `${process.env.REACT_APP_SERVER_URL}/api/bkash/createPayment`,
+      {
+        ...body,
+        totalPrice,
+      }
+    );
+    window.location.replace(agreementResponse);
+  };
   return {
     toggleModal,
     open,
