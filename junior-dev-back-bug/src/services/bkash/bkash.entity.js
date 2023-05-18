@@ -61,5 +61,5 @@ export const status =
   ({ config }) =>
   async (req, res) => {
     let email = req.query.email;
-    res.redirect(config.base + "?buy=success?email=" + email);
+    res.redirect(config.base + "?buy=success&email=" + email);
   };
