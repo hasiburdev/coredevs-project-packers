@@ -13,6 +13,7 @@ export default function Contact({ register }) {
         <div className="space-y-2 ">
           <Label title={"Email Address"} />
           <Input
+            required
             placeholder="Email ...."
             name="email"
             register={{ ...register("email") }}
@@ -48,6 +49,7 @@ export default function Contact({ register }) {
           <div className="space-y-2 w-full">
             <Label title={"First Name"} />
             <Input
+              required
               placeholder="Enter your first name"
               name="firstName"
               register={{ ...register("firstName") }}
@@ -56,6 +58,7 @@ export default function Contact({ register }) {
           <div className="space-y-2 w-full">
             <Label title={"Last Name"} />
             <Input
+              required
               placeholder="Enter your last name"
               name="lastName"
               register={{ ...register("lastname") }}
@@ -66,6 +69,7 @@ export default function Contact({ register }) {
           <Label title="Address" />
           <Input
             placeholder="Enter your address"
+            required
             name="address"
             register={{ ...register("address") }}
           />
@@ -74,6 +78,7 @@ export default function Contact({ register }) {
           <div className="space-y-2">
             <Label title="City" />
             <Input
+              required
               placeholder="Enter your City"
               name="city"
               register={{ ...register("city") }}
@@ -82,6 +87,7 @@ export default function Contact({ register }) {
           <div className="space-y-2">
             <Label title="Area" />
             <Input
+              required
               placeholder="Enter your area"
               name="area"
               register={{ ...register("area") }}
@@ -90,6 +96,7 @@ export default function Contact({ register }) {
           <div className="space-y-2">
             <Label title="Zip code" />
             <Input
+              required
               placeholder="Enter your zip"
               name="zip"
               register={{ ...register("zip") }}
@@ -99,6 +106,7 @@ export default function Contact({ register }) {
         <div className="space-y-2">
           <Label title="Delivery Instructions (Optional)" />
           <TextArea
+            required
             placeholder="Enter your delivery instructions"
             name="delivery"
             register={{ ...register("delivery") }}
