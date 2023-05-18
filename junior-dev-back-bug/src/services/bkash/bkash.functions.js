@@ -2,11 +2,11 @@
  * !! ATTENTION PLEASE !!
  * Please refer to the documentation at https://developer.bka.sh for information on bKash.
  */
-import fetch from '../../utils/fetch';
+import fetch from "../../utils/fetch";
 
 class BaseClass {
-  sandbox = 'https://tokenized.sandbox.bka.sh/v1.2.0-beta/tokenized/checkout';
-  live = 'https://tokenized.pay.bka.sh/v1.2.0-beta/tokenized/checkout';
+  sandbox = "https://tokenized.sandbox.bka.sh/v1.2.0-beta/tokenized/checkout";
+  live = "https://tokenized.pay.bka.sh/v1.2.0-beta/tokenized/checkout";
 
   constructor(username, password, appKey, appSecret, isDev) {
     this.username = username;
@@ -24,7 +24,7 @@ class BaseClass {
 
   async grantToken() {
     try {
-      let url = this.baseUrl + '/token/grant';
+      let url = this.baseUrl + "/token/grant";
       let headers = {
         username: this.username,
         password: this.password,
@@ -36,11 +36,13 @@ class BaseClass {
       };
 
       let res = await fetch({
-        method: 'POST',
-        url, headers, data
+        method: "POST",
+        url,
+        headers,
+        data,
       });
 
-      if (res?.statusCode === '0000') {
+      if (res?.statusCode === "0000") {
         this.token = res?.id_token;
         this.tokenType = res?.token_type;
         this.refreshToken = res?.refresh_token;
@@ -52,43 +54,55 @@ class BaseClass {
     }
   }
 
-  async createAgreement({ mode = '', payerReference = '', email = '', totalPrice = 0 }) {
+  async createAgreement({
+    mode = "0000",
+    payerReference = "",
+    email = "",
+    totalPrice = 0,
+  }) {
     try {
-      let url = this.baseUrl + '/create';
+      let url = this.baseUrl + "/create";
       let data = {
         mode,
         payerReference,
-        callbackURL: 'http://localhost:9000/api/bkash/execute/?email=' + email + '&totalPrice=' + totalPrice,
+        callbackURL:
+          "http://localhost:9000/api/bkash/execute?email=" +
+          email +
+          "&totalPrice=" +
+          totalPrice,
+        amount: totalPrice.toString(),
+        intent: "Sale",
+        currency: "BDT",
       };
-      let headers = { Authorization: this.token, 'X-APP-Key': this.appKey };
-      return await fetch({ method: 'POST', url, headers, data });
+      let headers = { Authorization: this.token, "X-APP-Key": this.appKey };
+      return await fetch({ method: "POST", url, headers, data });
     } catch (error) {
       throw new Error(error.message);
     }
   }
 
-  async executeAgreement(paymentID = '') {
+  async executeAgreement(paymentID = "") {
     try {
-      let url = this.baseUrl + '/execute';
-      let headers = { Authorization: this.token, 'X-APP-Key': this.appKey };
-      return await fetch({ method: 'POST', url, headers, data: { paymentID } });
+      let url = this.baseUrl + "/execute";
+      let headers = { Authorization: this.token, "X-APP-Key": this.appKey };
+      return await fetch({ method: "POST", url, headers, data: { paymentID } });
     } catch (error) {
       throw new Error(error.message);
     }
   }
   async agreementStatus() {
     try {
-      let url = this.baseUrl + '/agreement/status';
+      let url = this.baseUrl + "/agreement/status";
       let data = { agreementID: this.agreementID };
-      let headers = { Authorization: this.token, 'X-APP-Key': this.appKey };
-      return await fetch({ method: 'POST', url, headers, data });
+      let headers = { Authorization: this.token, "X-APP-Key": this.appKey };
+      return await fetch({ method: "POST", url, headers, data });
     } catch (error) {
       throw new Error(error.message);
     }
   }
 
   async createPayment({
-    mode,
+    mode = "0001",
     merchantAssociationInfo,
     amount,
     merchantInvoiceNumber,
@@ -96,7 +110,7 @@ class BaseClass {
     baseURL,
   }) {
     try {
-      let url = this.baseUrl + '/create';
+      let url = this.baseUrl + "/create";
       let data = {
         agreementID: agreementID,
         mode: mode,
@@ -104,12 +118,12 @@ class BaseClass {
         callbackURL: baseURL,
         merchantAssociationInfo: merchantAssociationInfo,
         amount: amount,
-        currency: 'BDT',
-        intent: 'sale',
+        currency: "BDT",
+        intent: "sale",
         merchantInvoiceNumber: merchantInvoiceNumber,
       };
-      let headers = { Authorization: this.token, 'X-APP-Key': this.appKey };
-      return await fetch({ method: 'POST', url, headers, data });
+      let headers = { Authorization: this.token, "X-APP-Key": this.appKey };
+      return await fetch({ method: "POST", url, headers, data });
     } catch (error) {
       throw new Error(error.message);
     }
@@ -117,10 +131,10 @@ class BaseClass {
 
   async executePayment({ paymentID }) {
     try {
-      let url = this.baseUrl + '/execute';
+      let url = this.baseUrl + "/execute";
       let data = { paymentID: paymentID };
-      let headers = { Authorization: this.token, 'X-APP-Key': this.appKey };
-      return await fetch({ method: 'POST', url, headers, data });
+      let headers = { Authorization: this.token, "X-APP-Key": this.appKey };
+      return await fetch({ method: "POST", url, headers, data });
     } catch (error) {
       throw new Error(error.message);
     }
@@ -128,10 +142,10 @@ class BaseClass {
 
   async queryPayment(paymentID) {
     try {
-      let url = this.baseUrl + '/payment/status';
+      let url = this.baseUrl + "/payment/status";
       let data = { paymentID };
-      let headers = { Authorization: this.token, 'X-APP-Key': this.appKey };
-      return await fetch({ method: 'POST', url, headers, data });
+      let headers = { Authorization: this.token, "X-APP-Key": this.appKey };
+      return await fetch({ method: "POST", url, headers, data });
     } catch (error) {
       throw new Error(error.message);
     }
@@ -139,10 +153,10 @@ class BaseClass {
 
   async paymentStatus(paymentID) {
     try {
-      let url = this.baseUrl + '/payment/status';
+      let url = this.baseUrl + "/payment/status";
       let data = { paymentID };
-      let headers = { Authorization: this.token, 'X-APP-Key': this.appKey };
-      return await fetch({ method: 'POST', url, headers, data });
+      let headers = { Authorization: this.token, "X-APP-Key": this.appKey };
+      return await fetch({ method: "POST", url, headers, data });
     } catch (error) {
       throw new Error(error.message);
     }
@@ -150,10 +164,10 @@ class BaseClass {
 
   async searchTransaction(trxID) {
     try {
-      let url = this.baseUrl + '/general/searchTransaction';
+      let url = this.baseUrl + "/general/searchTransaction";
       let data = { trxID };
-      let headers = { Authorization: this.token, 'X-APP-Key': this.appKey };
-      return await fetch({ method: 'POST', url, headers, data });
+      let headers = { Authorization: this.token, "X-APP-Key": this.appKey };
+      return await fetch({ method: "POST", url, headers, data });
     } catch (error) {
       throw new Error(error.message);
     }
@@ -161,13 +175,13 @@ class BaseClass {
 
   async searchTransactionDetails() {
     try {
-      let url = this.baseUrl + '/general/searchTransaction';
+      let url = this.baseUrl + "/general/searchTransaction";
       let headers = {
         Authorization: this.token,
-        'X-APP-Key': this.appKey,
+        "X-APP-Key": this.appKey,
       };
       let data = { trxID: this.trxID };
-      return await fetch({ method: 'POST', url, headers, data });
+      return await fetch({ method: "POST", url, headers, data });
     } catch (error) {
       throw new Error(error.message);
     }

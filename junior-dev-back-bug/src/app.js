@@ -1,28 +1,28 @@
-import { json, urlencoded } from 'express';
-import cookieParser from 'cookie-parser';
-import form from 'express-form-data';
-import express from 'express';
-import { Router } from 'express';
+import { json, urlencoded } from "express";
+import cookieParser from "cookie-parser";
+import form from "express-form-data";
+import express from "express";
+import { Router } from "express";
 // import http2 from 'spdy';
-import http2 from 'https';
-import http from 'http';
-import path from 'path';
-import morgan from 'morgan';
-import actuator from 'express-actuator';
-import { readFileSync } from 'fs';
-import cors from 'cors';
+import http2 from "https";
+import http from "http";
+import path from "path";
+import morgan from "morgan";
+import actuator from "express-actuator";
+import { readFileSync } from "fs";
+import cors from "cors";
 
 // Local Services
-import { hooks } from './hooks';
-import { services } from './services';
-import socket, { listen as wsListen } from './controllers/socket';
-import SearchCtrl from './controllers/search/search';
-import NewMailer from './controllers/email';
-import * as operations from './controllers/operations';
+import { hooks } from "./hooks";
+import { services } from "./services";
+import socket, { listen as wsListen } from "./controllers/socket";
+import SearchCtrl from "./controllers/search/search";
+import NewMailer from "./controllers/email";
+import * as operations from "./controllers/operations";
 
 // Settings
-import settings from '../settings.json';
-import { imageUp } from './controllers/imageUp';
+import settings from "../settings.json";
+import { imageUp } from "./controllers/imageUp";
 
 export default class App {
   constructor() {
@@ -46,33 +46,34 @@ export default class App {
   init() {
     const { parse } = form;
 
-    this.express.enable('trust proxy');
+    this.express.enable("trust proxy");
 
     // Load the middlewwares
     this.express.use(
       cors({
         origin: this.config.origin,
-        credentials: true
-      }));
-    this.express.use(morgan('common')); // Logger
-    this.express.use(actuator({ infoGitMode: 'full' })); // Health Checker
+        credentials: true,
+      })
+    );
+    this.express.use(morgan("common")); // Logger
+    this.express.use(actuator({ infoGitMode: "full" })); // Health Checker
     this.express.use(json()); // Parse JSON response
     this.express.use(urlencoded({ extended: false })); // Legacy URL encoding
     this.express.use(cookieParser()); // Parse cookies
     this.express.use(parse()); // Parse Form data as JSON
-    this.express.use(express.static(path.resolve(__dirname, '..', 'client'))); // REACT build files (Statics)
-    this.express.use('/api', this.router); // All the API routes
+    this.express.use(express.static(path.resolve(__dirname, "..", "client"))); // REACT build files (Statics)
+    this.express.use("/api", this.router); // All the API routes
 
     if (this.config.useHTTP2) {
       // SSL configuration
       this.ssl = {
-        key: readFileSync(path.resolve('ssl', 'privatekey.pem')),
-        cert: readFileSync(path.resolve('ssl', 'certificate.pem')),
+        key: readFileSync(path.resolve("ssl", "privatekey.pem")),
+        cert: readFileSync(path.resolve("ssl", "certificate.pem")),
       };
 
       this.options = {
         ...this.ssl,
-        allowHTTP1: true
+        allowHTTP1: true,
       };
 
       // Server
@@ -97,8 +98,8 @@ export default class App {
 
   listen() {
     // Serve Front-end
-    this.express.get('*', (req, res) => {
-      res.sendFile(path.resolve(__dirname, '..', 'client', 'index.html'));
+    this.express.get("*", (req, res) => {
+      res.sendFile(path.resolve(__dirname, "..", "client", "index.html"));
     });
 
     // Boot the server
@@ -122,7 +123,7 @@ export default class App {
       lyra: this.search,
       db: this.db,
       mail: this.mail,
-      config: this.config
+      config: this.config,
     });
   }
 
@@ -135,8 +136,8 @@ export default class App {
         lyra: this.search,
         db: this.db,
         mail: this.mail,
-        config: this.config
-      }
+        config: this.config,
+      },
     };
   }
 }
