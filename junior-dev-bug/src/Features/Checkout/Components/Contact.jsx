@@ -106,7 +106,6 @@ export default function Contact({ register }) {
         <div className="space-y-2">
           <Label title="Delivery Instructions (Optional)" />
           <TextArea
-            required
             placeholder="Enter your delivery instructions"
             name="delivery"
             register={{ ...register("delivery") }}
