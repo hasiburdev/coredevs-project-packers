@@ -81,7 +81,7 @@ export default function Order() {
 
         <Btn
           disabled={loading}
-          className="bg-secondary disabled:cursor-disabled disabled:bg-secondary/50"
+          className="bg-secondary disabled:cursor-not-allowed disabled:bg-secondary disabled:bg-opacity-50"
           type="submit"
         >
           {loading ? "Loading..." : "Continue to Payment"}
